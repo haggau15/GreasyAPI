@@ -6,7 +6,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
-namespace CosmosFunctions;
+namespace CosmosFunctions.Functions;
 
 public class GreaseTrigger
 {
