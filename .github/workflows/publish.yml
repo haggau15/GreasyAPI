@@ -24,9 +24,11 @@ jobs:
     - name: 'Resolve Project Dependencies Using Dotnet'
       shell: pwsh
       run: |
-        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-        dotnet publish CosmosFunctions.sln --configuration Release --output ./output
-        popd
+        dotnet restore ./CosmosFunctions/CosmosFunctions.csproj
+        dotnet publish ./CosmosFunctions/CosmosFunctions.csproj \
+          --configuration Release \
+          --output ./output
+
 
     - name: 'Run Azure Functions Action'
       uses: Azure/functions-action@v1
