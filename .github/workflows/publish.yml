@@ -24,8 +24,8 @@ jobs:
     - name: 'Resolve Project Dependencies Using Dotnet'
       shell: bash
       run: |
-        dotnet restore ./CosmosFunctions/CosmosFunctions.csproj
-        dotnet publish ./CosmosFunctions/CosmosFunctions.csproj \
+        dotnet restore CosmosFunctions.csproj
+        dotnet publish CosmosFunctions.csproj \
           --configuration Release --output ./output
 
     - name: 'Run Azure Functions Action'
