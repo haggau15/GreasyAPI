@@ -1,39 +1,37 @@
-name: Deploy DotNet project to Azure Function App
+name: Deploy api to azure function app
 
 on:
   [push]
 
 env:
-  AZURE_FUNCTIONAPP_NAME: 'greasy-api'
-  DOTNET_VERSION: '8.0.x'
+  AZURE_FUNCTIONAPP_NAME: 'greasy-api'   # set this to your function app name on Azure
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'       # set this to the path to your function app project, defaults to the repository root
+  DOTNET_VERSION: '8.0.x'                   # set this to the dotnet version to use (e.g. '2.1.x', '3.1.x', '5.0.x')
 
 jobs:
   build-and-deploy:
     runs-on: windows-latest
     environment: dev
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v3
 
-      - name: Setup .NET ${{ env.DOTNET_VERSION }}
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      # IMPORTANT: publish the Functions *project* (.csproj), not the solution
-      - name: Publish Functions project
-        shell: pwsh
-        run: |
-          dotnet restore .\CosmosFunctions.csproj
-          dotnet publish .\CosmosFunctions.csproj --configuration Release --output .\publish
+    - name: 'Resolve Project Dependencies Using Dotnet'
+      shell: pwsh
+      run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        dotnet publish CosmosFunctions.sln --configuration Release --output ./output
+        popd
 
-      - name: Deploy to Azure Functions
-        uses: Azure/functions-action@v1.5.3
-        with:
-          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-          package: './publish'                         # deploy the publish output
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
-          scm-do-build-during-deployment: ''           # don't toggle via Kudu
-          enable-oryx-build: ''                        # don't toggle via Kudu
-          remote-build: false                          # we already published locally
+    - name: 'Run Azure Functions Action'
+      uses: Azure/functions-action@v1
+      id: fa
+      with:
+        app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
