@@ -17,10 +17,10 @@
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.1.0" />
 
     <!-- If you have Cosmos DB TRIGGERS, add this: -->
-    <!-- <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.CosmosDB" Version="4.*" /> -->
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.CosmosDB" Version="4.*" />
 
     <!-- If you use Cosmos client in code, prefer a stable library -->
-    <!-- <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.*" /> OR a stable Azure.Cosmos 4.x if GA -->
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.*" />
   </ItemGroup>
 
   <!-- Ensures host.json is copied even if you customize items -->
