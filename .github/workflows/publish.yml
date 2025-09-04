@@ -22,7 +22,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: 'Resolve Project Dependencies Using Dotnet'
-      shell: bash
+      shell: pwsh
       run: |
         dotnet restore CosmosFunctions.csproj
         dotnet publish CosmosFunctions.csproj \
