@@ -21,12 +21,12 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: 'Resolve Project Dependencies Using Dotnet'
+    - name: Publish
       shell: pwsh
       run: |
-        dotnet restore CosmosFunctions.csproj
-        dotnet publish CosmosFunctions.csproj \
-          --configuration Release --output ./output
+        dotnet publish CosmosFunctions.csproj `
+          --configuration Release `
+          --output ./output
 
     - name: 'Run Azure Functions Action'
       uses: Azure/functions-action@v1
