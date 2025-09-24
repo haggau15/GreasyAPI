@@ -22,9 +22,8 @@ public sealed class PlaceDocument
     [JsonPropertyName("displayName")]
     public LocalizedText DisplayName { get; set; }
 
-    // Container with its own metadata + an array of review items
     [JsonPropertyName("reviews")]
-    public ReviewsSection Reviews { get; set; }
+    public List<Review> Reviews { get; set; }
 
     [JsonPropertyName("averagesentiment")]
     public Sentiment AverageSentiment { get; set; }
